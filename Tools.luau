@@ -7,7 +7,7 @@ local currentlyuniqueid=0
 local offsettext='                    '
 -- DeepLevel count as an indicator for a recursive table
 --     and how deep is the table
-function T.printtable(_table:{[any]:any},DeepLevel:number?) 
+function T.PrintTable(_table:{[any]:any},DeepLevel:number?) 
  if typeof(_table)~="table" then warn(`{_table} is not a table`)return end
     local added=''
     for j,k in _table do  
