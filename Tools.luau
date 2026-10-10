@@ -1,7 +1,51 @@
 local T = {}
 local uniqueid='UNIQUEID'
+local currentlyuniqueid=0
 
 --==Other stuff that didnt fit==--
+
+local offsettext='                    '
+-- DeepLevel count as an indicator for a recursive table
+--     and how deep is the table
+function T.printtable(_table:{[any]:any},DeepLevel:number?) 
+ if typeof(_table)~="table" then warn(`{_table} is not a table`)return end
+    local added=''
+    for j,k in _table do  
+            added..=`\n`
+            
+            if DeepLevel then
+               for i=1, DeepLevel do
+                  added..='    ' 
+               end
+                
+            end
+            added..=`{offsettext}` -- to not make the output window look awkward
+            added..=`[{j}]: `
+        if typeof(k)=='table' then
+            added..="{"
+            added..=printall(k,(DeepLevel or 0)+1 ) 
+        else
+            if typeof(k)=='string' then
+                k=`"{k}"`
+            end
+            
+            added..=tostring(k)
+        end
+        
+        added..=','
+        
+    
+    end
+
+    if not DeepLevel then
+        print(`\{{_table}\} = \{ {added}`)
+    else
+        added..=`\n{offsettext}\}`
+        return added
+    end
+    
+end
+
 
 -- run a function that yield and does not stop upon error
 -- does not gave accurate error addreses
@@ -196,7 +240,8 @@ end
 
 --generate a random unique id for the instnace
 function T.SetUniqueID(_Instance:Instance):string
-	local id=game.HttpService:GenerateGUID(false)
+	currentlyuniqueid+=1
+	local id=currentlyuniqueid--game.HttpService:GenerateGUID(false)
 	_Instance:SetAttribute(uniqueid,id)
 	return id
 end
