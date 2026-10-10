@@ -23,7 +23,7 @@ function T.PrintTable(_table:{[any]:any},DeepLevel:number?)
             added..=`[{j}]: `
         if typeof(k)=='table' then
             added..="{"
-            added..=printall(k,(DeepLevel or 0)+1 ) 
+            added..=T.PrintTable(k,(DeepLevel or 0)+1 ) 
         else
             if typeof(k)=='string' then
                 k=`"{k}"`
@@ -40,7 +40,10 @@ function T.PrintTable(_table:{[any]:any},DeepLevel:number?)
     if not DeepLevel then
         print(`\{{_table}\} = \{ {added}`)
     else
-        added..=`\n{offsettext}\}`
+        if added~='' then -- is it empty??
+            added..=`\n{offsettext}`
+        end
+        added..=`\}`
         return added
     end
     
